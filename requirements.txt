@@ -1,0 +1,38 @@
+# ============================================================
+# HMTF 依赖清单
+# ------------------------------------------------------------
+# 安装：pip install -r requirements.txt
+#
+# 说明：以下为运行本仓库所需的最小依赖集合，未锁定具体版本号。
+# 由于 mamba-ssm / triton 与 PyTorch、CUDA 版本强耦合，
+# 请先按 https://pytorch.org 安装匹配你 CUDA 版本的 torch，
+# 再安装其余依赖。
+#
+# 若需要严格复现实验，请在跑通环境后锁定版本：
+#   pip freeze > requirements-lock.txt
+# ============================================================
+
+# ---- 深度学习框架 ----
+torch
+torchvision
+
+# ---- Mamba 状态空间模型 ----
+# 需要 NVIDIA GPU + CUDA，从源码编译，耗时较长
+mamba-ssm
+
+# ---- 模型组件 ----
+timm
+einops
+torch-dct
+
+# ---- 数据处理 ----
+numpy
+scipy
+scikit-learn
+pandas
+
+# ---- 可视化与统计 ----
+matplotlib
+
+# ---- 模型复杂度统计（FLOPs / Params）----
+thop

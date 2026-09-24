@@ -17,8 +17,12 @@
 # 导入PyTorch深度学习框架（必选），用于构建神经网络
 import torch
 
-# 从models文件夹导入videomamba模块，这是Vision Mamba模型
+# 导入HMTF模块，这是本文提出的模型（Vision Mamba + 双曲几何 + 模糊融合）
 import HMTF
+
+# 兼容旧写法：早期代码里模型模块名为 videomamba（见 models/videomamba.py），
+# 现在模型实现统一放在根目录的 HMTF.py 中，这里给一个别名，保证下方调用不变
+import HMTF as videomamba
 
 # 导入os模块，用于操作文件和目录
 import os
@@ -89,9 +93,9 @@ def loadData():
     # 如果配置的数据集是'PaviaU'
     if config.data == 'PaviaU':
         # 使用scipy读取PaviaU.mat文件，['paviaU']是文件里的变量名
-        data = sio.loadmat('./data/PaviaU/PaviaU.mat')['paviaU']
+        data = sio.loadmat('./data/pu/PaviaU.mat')['paviaU']
         # 读取对应的标签文件（ground truth）
-        labels = sio.loadmat('./data/PaviaU/PaviaU_gt.mat')['paviaU_gt']
+        labels = sio.loadmat('./data/pu/PaviaU_gt.mat')['paviaU_gt']
 
     # 如果配置的数据集是'LongKou'
     elif config.data == 'LongKou':
@@ -107,10 +111,18 @@ def loadData():
     elif config.data == 'Salinas':
         data = sio.loadmat('./data/Salinas/Salinas_corrected.mat')['salinas_corrected']
         labels = sio.loadmat('./data/Salinas/Salinas_gt.mat')['salinas_gt']
-    # 如果配置的数据集是'Salinas'
+
+    # 如果配置的数据集是'PaviaC'
     elif config.data == 'PaviaC':
         data = sio.loadmat('./data/pc/Pavia.mat')['pavia']
         labels = sio.loadmat('./data/pc/Pavia_gt.mat')['pavia_gt']
+
+    # 其它取值：给出明确报错，避免出现难以定位的 UnboundLocalError
+    else:
+        raise ValueError(
+            "未知的 config.data 取值: %r。"
+            "可选值为 'PaviaU' / 'PaviaC' / 'Houston2013' / 'LongKou' / 'Salinas'。" % (config.data,)
+        )
     
     # 转float32以节省内存（.mat通常是float64，占内存2倍）
     if data.dtype == np.float64:
