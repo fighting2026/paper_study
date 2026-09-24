@@ -84,11 +84,22 @@ pip install -r requirements.txt
 
 ### 数据来源
 
-以上数据集均为公开基准数据，也可直接从原作者处获取：
+以上数据集均为公开基准数据，版权归原作者所有。本仓库只是把它们转成了 `.mat` 格式并随代码一起提供，
+**如需引用请遵循各数据集的原始许可与引用要求**。也可以直接从官方来源自行下载：
 
-- Pavia University / Pavia Centre — [HSI 数据集](https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes)
-- Houston 2013 — IEEE GRSS Data Fusion Contest
-- WHU-Hi-LongKou — [WHU-Hi 数据集](http://rsidea.whu.edu.cn/resource_WHUHi_sharing.htm)
+| 数据集 | 官方来源 | 需要下载的文件 / 变量名 |
+|---|---|---|
+| Pavia University (`data/pu/`) | [UPV/EHU 高光谱数据集页](https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes) | `PaviaU.mat`（变量 `paviaU`）、`PaviaU_gt.mat`（变量 `paviaU_gt`） |
+| Pavia Centre (`data/pc/`) | 同上 | `Pavia.mat`（变量 `pavia`）、`Pavia_gt.mat`（变量 `pavia_gt`） |
+| Salinas（代码支持、仓库未附带） | 同上 | `Salinas_corrected.mat`、`Salinas_gt.mat`，放到 `data/Salinas/` |
+| Houston 2013 (`data/hus/`) | [2013 IEEE GRSS Data Fusion Contest](https://machinelearning.ee.uh.edu/2013-ieee-grss-data-fusion-contest)（旧地址：[hyperspectral.ee.uh.edu](https://hyperspectral.ee.uh.edu/?page_id=459)） | 需在官网填表免费申请；本仓库使用 **cloud-free** 版本，变量名为 `Houston` / `Houston_GT`（注意 `GT` 大写） |
+| WHU-Hi-LongKou (`data/LongKou/`) | [WHU-Hi 数据集分享页](http://rsidea.whu.edu.cn/resource_WHUHi_sharing.htm) | `WHU_Hi_LongKou.mat`（变量 `WHU_Hi_LongKou`）、`WHU_Hi_LongKou_gt.mat` |
+
+> **在网页上浏览本仓库时，`.mat` 文件只会显示成 130 字节左右的 LFS 指针文本，看不到真实数据**，
+> 这是 Git LFS 的正常行为（真实数据在 LFS 存储里，clone 时自动还原）。
+> 如果你是通过在线匿名镜像（如 anonymous.4open.science）查看代码，请按上表从官方来源下载数据。
+
+各数据集标签文件（ground truth）的类别编号与 `main.py` 中的处理逻辑一致，无需再做转换。
 
 ---
 
@@ -148,7 +159,8 @@ python main.py
 模型实现参考并改写了以下开源项目，特此致谢：
 
 - [VideoMamba](https://github.com/OpenGVLab/VideoMamba) — Mamba 主干与 `models/csms6s.py` 选择性扫描算子
-- [HSI-MFormer](https://github.com/) — 高光谱分类整体框架与 `get_cls_map_PU.py` 出图脚本
+- [HSI-MFormer](https://github.com/tubingnuist/HSI-MFormer) — 高光谱分类整体框架与 `get_cls_map_PU.py` 出图脚本
+  （Y. He, B. Tu, B. Liu, J. Li and A. Plaza, "HSI-MFormer: Integrating Mamba and Transformer Experts for Hyperspectral Image Classification," *IEEE TGRS*, vol. 63, 2025, doi: 10.1109/TGRS.2025.3564167）
 - [timm](https://github.com/huggingface/pytorch-image-models) / DeiT — 部分模块来自其实现
 
 ---
